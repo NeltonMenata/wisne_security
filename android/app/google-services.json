@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "266143258236",
+    "project_id": "wisne-security",
+    "storage_bucket": "wisne-security.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266143258236:android:d2f071d45ab17b5339dbf9",
+        "android_client_info": {
+          "package_name": "com.example.wisne_security"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266143258236-lj436ds9f8rab2rarcu5276rqf65ivcj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wisne_security",
+            "certificate_hash": "cc15241c758405c4c165cdce7c587f549ff6853a"
+          }
+        },
+        {
+          "client_id": "266143258236-hdbae8c4jjvi73er2f5ujtk8inq0jge4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvJeZ3v23WXmeHqBUzmIUMUj0wj2orfNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266143258236-hdbae8c4jjvi73er2f5ujtk8inq0jge4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
