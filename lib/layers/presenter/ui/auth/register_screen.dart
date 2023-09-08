@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wisne_security/core/service/auth_service.dart';
 import 'package:wisne_security/layers/presenter/routes/Routes.dart';
 import 'package:wisne_security/layers/presenter/ui/auth/auth_firebase.dart';
 import '../../utils/customButton.dart';
@@ -28,6 +29,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       level: 1,
       name: 'Angola',
       phoneCode: '244');
+
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     phoneController.selection = TextSelection.fromPosition(
@@ -55,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     color: primaryColor,
                   ),
                   child: Image.asset(
-                    "assets/logo/logo.png",
+                    "assets/logo/security.png",
                   ),
                 ),
                 const TextWithTap(
@@ -134,7 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 50,
                   child: CustomButton(
                     text: "Login",
-                    onPressed: () {
+                    onPressed: () async {
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -145,16 +148,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       //   ),
                       // );
                       if (phoneController.text.isNotEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text(
-                                "Verificando o número, por favor aguarde!"),
-                          ),
-                        );
                         final code = selectedCountry.phoneCode;
-                        controller.verifyNumber(
-                            context, "+$code" + phoneController.text);
+                        await AuthService.verifyNumber(
+                            phoneNumber: "+$code${phoneController.text}",
+                            next: () {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.HOME);
+                            });
+
+                        Navigator.pushNamed(context, Routes.OTP);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:wisne_security/core/service/auth_service.dart';
 import 'package:wisne_security/layers/presenter/routes/Routes.dart';
 import 'package:wisne_security/layers/presenter/ui/auth/auth_firebase.dart';
 import '../../utils/colors.dart';
@@ -17,12 +19,13 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final auth = AuthControllerFirebase.instance;
+  final codeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context)?.settings.arguments as Map;
-    String numero = "${args["numero"]}";
-    String code = "${args["code"]}";
-    String id = "${args["id"]}";
+    //var args = ModalRoute.of(context)?.settings.arguments as Map;
+    String numero = "";
+    String code = "";
+    String id = "";
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -71,9 +74,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 height: 30,
               ),
               Pinput(
-                length: code.length,
-                smsCodeMatcher: code,
-                controller: TextEditingController(text: code),
+                //length: code.length,
+                //smsCodeMatcher: code,
+                length: 6,
+                controller: codeController,
                 showCursor: true,
                 onCompleted: (pin) => print(pin),
                 defaultPinTheme: PinTheme(
@@ -94,26 +98,28 @@ class _OtpScreenState extends State<OtpScreen> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: CustomButton(
-                  text: "Enviar",
-                  onPressed: () {
-                    setState(() {
-                      print(code);
-                    });
-                    auth.auth
-                        .applyActionCode(code)
-                        .then((value) => print("Verified Sucess"))
-                        .catchError((exepction) {
-                      print("Error code: $exepction");
-                    });
+                child: AuthService.loading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CustomButton(
+                        text: "Enviar",
+                        onPressed: () {
+                          submitCode(codeController.text);
+                          // auth.auth
+                          //     .applyActionCode(code)
+                          //     .then((value) => print("Verified Success"))
+                          //     .catchError((exepction) {
+                          //   print("Error code: $exepction");
+                          // });
 
-                    //Navigator.pushNamed(context, Routes.EDIT_USER);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Slivertabbat()),
-                    // );
-                  },
-                ),
+                          //Navigator.pushNamed(context, Routes.EDIT_USER);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => Slivertabbat()),
+                          // );
+                        },
+                      ),
               ),
               const TextWithTap(
                 "Não recebeu nenhum código?",
@@ -130,10 +136,26 @@ class _OtpScreenState extends State<OtpScreen> {
                 color: primaryColor,
                 onTap: () {},
               ),
+              Text("${AuthService.error}"),
+              Text("${FirebaseAuth.instance.currentUser}")
             ],
           ),
         ),
       ),
     );
+  }
+
+  submitCode(String smsCode) async {
+    AuthService.smsCode = smsCode;
+
+    setState(() {
+      AuthService.loading = true;
+    });
+    await AuthService.getVerificationId(() {
+      Navigator.pushNamed(context, Routes.HOME);
+    });
+    setState(() {
+      AuthService.loading = false;
+    });
   }
 }

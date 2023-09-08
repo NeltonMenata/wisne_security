@@ -26,7 +26,7 @@ class _WelcomePageState extends State<WelcomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/logo/logo.png",
+                  "assets/logo/login.png",
                   height: 300,
                 ),
                 const TextWithTap(

@@ -19,10 +19,27 @@ class AuthControllerFirebase {
   }
 
   Future<void> verifyNumber(BuildContext context, String phoneNumber) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.green,
+        content: Text("Verificando o número, por favor aguarde!"),
+      ),
+    );
     return await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
-        verificationCompleted: (credential) {},
+        verificationCompleted: (credential) {
+          print("Verification Completed");
+          print("################################");
+          print(credential);
+        },
         verificationFailed: (exception) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Erro ao verificar, tente novamente!"),
+            ),
+          );
           print("error: ${exception.message}");
         },
         codeSent: (verificationId, resendToken) {
@@ -33,16 +50,25 @@ class AuthControllerFirebase {
               .then((value) {
             if (value.docs.isEmpty) {
               collection.add({"phoneNumber": phoneNumber}).then((value1) {
-                Navigator.pushReplacementNamed(context, Routes.EDIT_USER,
-                    arguments: {"id": value1.id, "phoneNumber": phoneNumber});
+                Navigator.pushReplacementNamed(
+                  context,
+                  Routes.EDIT_USER,
+                  arguments: {
+                    "id": value1.id,
+                    "phoneNumber": phoneNumber,
+                    "code": resendToken,
+                  },
+                );
               });
             } else {
+              
               final data = value.docs[0];
               final user = data.data();
               Navigator.pushReplacementNamed(context, Routes.HOME, arguments: {
                 "name": user["name"],
                 "lastName": user["lastName"],
-                "phoneNumber": user["phoneNumber"]
+                "phoneNumber": user["phoneNumber"],
+                "code": resendToken,
               });
             }
           }).onError((error, stackTrace) {

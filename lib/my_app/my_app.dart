@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SplashPage(),
+      initialRoute: Routes.SPLASH,
       routes: Routes.routes(context),
     );
   }
