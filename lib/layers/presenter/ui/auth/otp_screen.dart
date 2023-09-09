@@ -65,8 +65,8 @@ class _OtpScreenState extends State<OtpScreen> {
               const SizedBox(
                 height: 10,
               ),
-              TextWithTap(
-                "Digite o codigo enviado no seu número de telefone + $code $numero",
+              const TextWithTap(
+                "Digite o codigo enviado no seu número de telefone",
                 fontSize: 16,
                 textAlign: TextAlign.center,
               ),
@@ -134,10 +134,12 @@ class _OtpScreenState extends State<OtpScreen> {
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: primaryColor,
-                onTap: () {},
+                onTap: () {
+                  setState(() {});
+                },
               ),
-              Text("${AuthService.error}"),
-              Text("${FirebaseAuth.instance.currentUser}")
+              Text("Error: ${AuthService.error}"),
+              Text("User: ${FirebaseAuth.instance.currentUser}")
             ],
           ),
         ),
@@ -152,7 +154,8 @@ class _OtpScreenState extends State<OtpScreen> {
       AuthService.loading = true;
     });
     await AuthService.getVerificationId(() {
-      Navigator.pushNamed(context, Routes.HOME);
+      //Navigator.pushNamed(context, Routes.HOME);
+      Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
     });
     setState(() {
       AuthService.loading = false;

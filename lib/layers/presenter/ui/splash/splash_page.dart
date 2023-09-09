@@ -55,9 +55,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void nextPage() async {
-    await FirebaseAuth.instance.signOut();
     await Future.delayed(const Duration(seconds: 1), () {
-      Navigator.pushReplacementNamed(context, Routes.WELCOME);
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, Routes.HOME);
+      } else {
+        Navigator.pushReplacementNamed(context, Routes.WELCOME);
+      }
     });
   }
 }

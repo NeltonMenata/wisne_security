@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wisne_security/core/service/auth_service.dart';
+import 'package:wisne_security/layers/presenter/routes/Routes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, this.title = "Home Page"}) : super(key: key);
@@ -37,6 +38,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Routes.REGISTER, (route) => false);
+              },
+              icon: const Icon(Icons.logout_outlined))
+        ],
       ),
       body: Center(
         child: Column(
