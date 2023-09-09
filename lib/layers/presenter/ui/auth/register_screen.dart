@@ -62,10 +62,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const TextWithTap(
-                  "Registro",
+                  "Registro / Login",
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   marginTop: 20,
+                  marginBottom: 20,
                 ),
                 const TextWithTap(
                   "Adicione seu número de telefone. Enviaremos um código de verificação",

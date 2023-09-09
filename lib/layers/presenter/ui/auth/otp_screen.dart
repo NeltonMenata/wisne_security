@@ -8,7 +8,6 @@ import '../../utils/colors.dart';
 import '../../utils/container_with_corner.dart';
 import '../../utils/customButton.dart';
 import '../../utils/text_with_tap.dart';
-import '../home/SlivertabBat.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);
@@ -138,8 +137,6 @@ class _OtpScreenState extends State<OtpScreen> {
                   setState(() {});
                 },
               ),
-              Text("Error: ${AuthService.error}"),
-              Text("User: ${FirebaseAuth.instance.currentUser}")
             ],
           ),
         ),
@@ -154,7 +151,6 @@ class _OtpScreenState extends State<OtpScreen> {
       AuthService.loading = true;
     });
     await AuthService.getVerificationId(() {
-      //Navigator.pushNamed(context, Routes.HOME);
       Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
     });
     setState(() {
